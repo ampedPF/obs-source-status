@@ -1,0 +1,39 @@
+{
+    "obs": {
+        "address": "127.0.0.1",
+        "port": "4444",
+        "password": "",
+        "sources": {
+            "a": {
+                "name": "[A] Game",
+                "icons": {
+                    "muted": "videogame_asset_off",
+                    "unmuted": "videogame_asset"
+                }
+            },
+            "b": {
+                "name": "[B] App",
+                "icons": {
+                    "muted": "music_off",
+                    "unmuted": "music_note"
+                }
+            },
+            "c": {
+                "name": "[C] Comms",
+                "icons": {
+                    "muted": "group_off",
+                    "unmuted": "group"
+                }
+            },
+            "d": {
+                "name": "[M] Mic.",
+                "icons": {
+                    "muted": "mic_off",
+                    "unmuted": "mic_none"
+                }
+            }
+        }
+    },
+    "display_icon": false,
+    "display_unmuted": false
+}

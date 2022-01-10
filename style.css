@@ -1,0 +1,23 @@
+body {
+    background-color: #292b2f;
+    margin: 0px auto;
+    overflow: hidden;
+}
+
+.mat-icons {
+    color: white;
+    font-size: 48px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#obs_div {
+    order: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
