@@ -1,6 +1,7 @@
 // var obsIcon;
 let elA, elB, elC, elD;
 let config;
+var obs;
 
 window.onload = function () {
     $.getJSON('./config.json', function (res) {
@@ -15,72 +16,41 @@ window.onload = function () {
             elD = document.getElementById('elD');
             console.log(config);
 
-            const obs = new OBSWebSocket();
+            obs = new OBSWebSocket();
             obs.connect({
-                address: config.obs.address + ":" + config.obs.port,
-                password: config.obs.password
-            });
+                    address: config.obs.address + ":" + config.obs.port,
+                    password: config.obs.password
+                })
+                .catch(err => { // Promise convention dicates you have a catch on every chain.
+                    console.log(err);
+                });
 
             obs.on('ConnectionOpened', () => {
                 try {
-                    obs.send("GetMute", {
-                        source: config.obs.sources.a.name
-                    }).then(data => {
-                        checkMute(data.muted, elA, config.obs.sources.a);
-                    })
-                    obs.send("GetMute", {
-                        source: config.obs.sources.b.name
-                    }).then(data => {
-                        checkMute(data.muted, elB, config.obs.sources.b);
-                    })
-                    obs.send("GetMute", {
-                        source: config.obs.sources.c.name
-                    }).then(data => {
-                        checkMute(data.muted, elC, config.obs.sources.c);
-                    })
-                    obs.send("GetMute", {
-                        source: config.obs.sources.d.name
-                    }).then(data => {
-                        checkMute(data.muted, elD, config.obs.sources.d);
-                    })
+                    sendGetMute(config.obs.sources.a, elA);
+                    sendGetMute(config.obs.sources.b, elB);
+                    sendGetMute(config.obs.sources.c, elC);
+                    sendGetMute(config.obs.sources.d, elD);
                 } catch (error) {
                     console.log(error)
                 }
             });
 
             obs.on("SourceMuteStateChanged", data => {
-                if (data.sourceName == config.obs.sources.a.name) {
-                    console.log("source A: ", data.muted);
-                    checkMute(data.muted, elA, config.obs.sources.a);
+                try {
+                    checkMuteState(data, config.obs.sources.a, elA);
+                    checkMuteState(data, config.obs.sources.b, elB);
+                    checkMuteState(data, config.obs.sources.c, elC);
+                    checkMuteState(data, config.obs.sources.d, elD);
+                } catch (error) {
+                    console.log(error)
                 }
             });
-
-            obs.on("SourceMuteStateChanged", data => {
-                if (data.sourceName == config.obs.sources.b.name) {
-                    console.log("source B: ", data.muted);
-                    checkMute(data.muted, elB, config.obs.sources.b);
-                }
-            });
-
-            obs.on("SourceMuteStateChanged", data => {
-                if (data.sourceName == config.obs.sources.c.name) {
-                    console.log("source C: ", data.muted);
-                    checkMute(data.muted, elC, config.obs.sources.c);
-                }
-            });
-
-            obs.on("SourceMuteStateChanged", data => {
-                if (data.sourceName == config.obs.sources.d.name) {
-                    console.log("source D: ", data.muted);
-                    checkMute(data.muted, elD, config.obs.sources.d);
-                }
-            });
-
         });
 
 }
 
-function checkMute(muted, element, source) {
+function setMuteStatus(muted, source, element) {
     if (muted) {
         element.innerHTML = source.icons.muted;
         element.style.visibility = "visible";
@@ -89,5 +59,23 @@ function checkMute(muted, element, source) {
         if (!config.display_unmuted) {
             element.style.visibility = "hidden";
         }
+    }
+}
+
+function sendGetMute(source, element) {
+    obs.send("GetMute", {
+        source: source.name
+    }).then(data => {
+        try {
+            setMuteStatus(data.muted, source, element);
+        } catch (error) {
+            console.log(error)
+        }
+    });
+}
+
+function checkMuteState(data, source, element) {
+    if (data.sourceName == source.name) {
+        setMuteStatus(data.muted, source, element);
     }
 }
