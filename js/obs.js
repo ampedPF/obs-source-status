@@ -1,5 +1,4 @@
-// var obsIcon;
-let elA, elB, elC, elD;
+let elements = {};
 let config;
 var obs;
 
@@ -10,11 +9,9 @@ window.onload = function () {
         .fail(function () {
             console.log("An error has occurred while loading config.json file.");
         }).then(() => {
-            elA = document.getElementById('elA');
-            elB = document.getElementById('elB');
-            elC = document.getElementById('elC');
-            elD = document.getElementById('elD');
-            console.log(config);
+            for (const [key, value] of Object.entries(config.obs.sources)) {
+                elements[key] = document.getElementById(key);
+            }
 
             obs = new OBSWebSocket();
             obs.connect({
@@ -25,23 +22,23 @@ window.onload = function () {
                     console.log(err);
                 });
 
+            // Checking Source State when connected to the socket
             obs.on('ConnectionOpened', () => {
                 try {
-                    sendGetMute(config.obs.sources.a, elA);
-                    sendGetMute(config.obs.sources.b, elB);
-                    sendGetMute(config.obs.sources.c, elC);
-                    sendGetMute(config.obs.sources.d, elD);
+                    for (const [key, value] of Object.entries(config.obs.sources)) {
+                        sendGetMute(key);
+                    }
                 } catch (error) {
                     console.log(error)
                 }
             });
 
+            // Check Source State on change
             obs.on("SourceMuteStateChanged", data => {
                 try {
-                    checkMuteState(data, config.obs.sources.a, elA);
-                    checkMuteState(data, config.obs.sources.b, elB);
-                    checkMuteState(data, config.obs.sources.c, elC);
-                    checkMuteState(data, config.obs.sources.d, elD);
+                    for (const [key, value] of Object.entries(config.obs.sources)) {
+                        checkMuteState(data, key);
+                    }
                 } catch (error) {
                     console.log(error)
                 }
@@ -50,32 +47,32 @@ window.onload = function () {
 
 }
 
-function setMuteStatus(muted, source, element) {
+function setMuteStatus(muted, source) {
     if (muted) {
-        element.innerHTML = source.icons.muted;
-        element.style.visibility = "visible";
+        elements[source].innerHTML = config.obs.sources[source].icons.muted;
+        elements[source].style.visibility = "visible";
     } else {
-        element.innerHTML = source.icons.unmuted;
+        elements[source].innerHTML = config.obs.sources[source].icons.unmuted;
         if (!config.display_unmuted) {
-            element.style.visibility = "hidden";
+            elements[source].style.visibility = "hidden";
         }
     }
 }
 
-function sendGetMute(source, element) {
+function sendGetMute(source) {
     obs.send("GetMute", {
-        source: source.name
+        source: config.obs.sources[source].name
     }).then(data => {
         try {
-            setMuteStatus(data.muted, source, element);
+            setMuteStatus(data.muted, source);
         } catch (error) {
             console.log(error)
         }
     });
 }
 
-function checkMuteState(data, source, element) {
-    if (data.sourceName == source.name) {
-        setMuteStatus(data.muted, source, element);
+function checkMuteState(data, source) {
+    if (data.sourceName == config.obs.sources[source].name) {
+        setMuteStatus(data.muted, source);
     }
 }

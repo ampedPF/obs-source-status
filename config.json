@@ -9,32 +9,28 @@
                 "icons": {
                     "muted": "videogame_asset_off",
                     "unmuted": "videogame_asset"
-                },
-                "element": "elA"
+                }
             },
             "b": {
                 "name": "[B] App",
                 "icons": {
                     "muted": "music_off",
                     "unmuted": "music_note"
-                },
-                "element": "elB"
+                }
             },
             "c": {
                 "name": "[C] Comms",
                 "icons": {
                     "muted": "group_off",
                     "unmuted": "group"
-                },
-                "element": "elC"
+                }
             },
             "d": {
                 "name": "[M] Mic.",
                 "icons": {
                     "muted": "mic_off",
                     "unmuted": "mic_none"
-                },
-                "element": "elD"
+                }
             }
         }
     },
