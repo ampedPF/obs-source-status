@@ -49,11 +49,11 @@ window.onload = function () {
 
 function setMuteStatus(muted, source) {
     if (muted) {
-        elements[source].innerHTML = config.obs.sources[source].icons.muted;
+        elements[source].innerHTML = config.obs.sources[source].icons.off;
         elements[source].style.visibility = "visible";
     } else {
-        elements[source].innerHTML = config.obs.sources[source].icons.unmuted;
-        if (!config.display_unmuted) {
+        elements[source].innerHTML = config.obs.sources[source].icons.on;
+        if (!config.display_on) {
             elements[source].style.visibility = "hidden";
         }
     }

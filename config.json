@@ -7,33 +7,33 @@
             "a": {
                 "name": "[A] Game",
                 "icons": {
-                    "muted": "videogame_asset_off",
-                    "unmuted": "videogame_asset"
+                    "off": "videogame_asset_off",
+                    "on": "videogame_asset"
                 }
             },
             "b": {
                 "name": "[B] App",
                 "icons": {
-                    "muted": "music_off",
-                    "unmuted": "music_note"
+                    "off": "music_off",
+                    "on": "music_note"
                 }
             },
             "c": {
                 "name": "[C] Comms",
                 "icons": {
-                    "muted": "group_off",
-                    "unmuted": "group"
+                    "off": "group_off",
+                    "on": "group"
                 }
             },
             "d": {
                 "name": "[M] Mic.",
                 "icons": {
-                    "muted": "mic_off",
-                    "unmuted": "mic_none"
+                    "off": "mic_off",
+                    "on": "mic_none"
                 }
             }
         }
     },
     "display_icon": false,
-    "display_unmuted": false
+    "display_on": false
 }
