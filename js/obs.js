@@ -1,40 +1,25 @@
-let elements = {};
-let config;
-var obs;
+let hmtl_elements = {};
+let obs;
 
-window.onload = function () {
-    $.getJSON('./config.json', function (res) {
-            config = res;
-        })
-        .fail(function () {
-            console.log("An error has occurred while loading config.json file.");
-        }).then(() => {
-            for (const [key, value] of Object.entries(config.obs.sources)) {
-                elements[key] = document.getElementById(key);
+window.onload = function() {
+    for (const [key, value] of Object.entries(config.obs.sources)) {
+        hmtl_elements[key] = document.getElementById(key);
+    }
+
+    obs = new OBSWebSocket();
+    connectObsWs(config.obs.ws_server_ip, config.obs.ws_server_port, config.obs.ws_server_password)
+        .then(() => {
+            // Check Sources' State upon connection
+            try {
+                for (const [key, value] of Object.entries(config.obs.sources)) {
+                    sendGetMute(key);
+                }
+            } catch (error) {
+                console.log(error);
             }
 
-            obs = new OBSWebSocket();
-            obs.connect({
-                    address: config.obs.address + ":" + config.obs.port,
-                    password: config.obs.password
-                })
-                .catch(err => { // Promise convention dicates you have a catch on every chain.
-                    console.log(err);
-                });
-
-            // Checking Source State when connected to the socket
-            obs.on('ConnectionOpened', () => {
-                try {
-                    for (const [key, value] of Object.entries(config.obs.sources)) {
-                        sendGetMute(key);
-                    }
-                } catch (error) {
-                    console.log(error)
-                }
-            });
-
             // Check Source State on change
-            obs.on("SourceMuteStateChanged", data => {
+            obs.on("InputMuteStateChanged", data => {
                 try {
                     for (const [key, value] of Object.entries(config.obs.sources)) {
                         checkMuteState(data, key);
@@ -47,32 +32,48 @@ window.onload = function () {
 
 }
 
-function setMuteStatus(muted, source) {
-    if (muted) {
-        elements[source].innerHTML = config.obs.sources[source].icons.off;
-        elements[source].style.visibility = "visible";
-    } else {
-        elements[source].innerHTML = config.obs.sources[source].icons.on;
-        if (!config.display_on) {
-            elements[source].style.visibility = "hidden";
-        }
+async function connectObsWs(address, port, password) {
+    try {
+        const {
+            obsWebSocketVersion,
+            negotiatedRpcVersion
+        } = await obs.connect('ws://' + address + ':' + port, password);
+        console.log(`Connected to server ${obsWebSocketVersion} (using RPC ${negotiatedRpcVersion})`);
+    } catch (error) {
+        console.error('Failed to connect', error.code, error.message);
     }
 }
 
 function sendGetMute(source) {
-    obs.send("GetMute", {
-        source: config.obs.sources[source].name
-    }).then(data => {
-        try {
-            setMuteStatus(data.muted, source);
-        } catch (error) {
-            console.log(error)
-        }
-    });
+    try {
+        obs.call("GetInputMute", {
+            inputName: config.obs.sources[source].name
+        }).then(data => {
+            try {
+                setMuteStatus(data.inputMuted, source);
+            } catch (error) {
+                console.log(error)
+            }
+        });
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 function checkMuteState(data, source) {
-    if (data.sourceName == config.obs.sources[source].name) {
-        setMuteStatus(data.muted, source);
+    if (data.inputName == config.obs.sources[source].name) {
+        setMuteStatus(data.inputMuted, source);
+    }
+}
+
+function setMuteStatus(muted, source) {
+    if (muted) {
+        hmtl_elements[source].innerHTML = config.obs.sources[source].icons.off;
+        hmtl_elements[source].style.visibility = "visible";
+    } else {
+        hmtl_elements[source].innerHTML = config.obs.sources[source].icons.on;
+        if (!config.display_icon_when_source_is_on) {
+            hmtl_elements[source].style.visibility = "hidden";
+        }
     }
 }
