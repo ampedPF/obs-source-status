@@ -1,7 +1,9 @@
 # OBS Audio Source Status
 
 This widget displays the current status of the specified OBS audio sources.
+
 It can be used as an overlay and/or as a projector.
+
 You can use any icons from <https://fonts.google.com/icons>
 
 ![Windowed Projector over Audio Mixer](/assets/audio_mixer_and_projector.png)
