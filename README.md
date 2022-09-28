@@ -1,4 +1,4 @@
-# Now Playing
+# OBS Audio Source Status
 
 This widget displays the current status of a specified audio sources.
 
