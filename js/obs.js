@@ -2,8 +2,13 @@ let hmtl_elements = {};
 let obs;
 
 window.onload = function() {
+    var obs_div = document.getElementById("obs_div");
     for (const [key, value] of Object.entries(config.obs.sources)) {
-        hmtl_elements[key] = document.getElementById(key);
+        var source_el = document.createElement("div");
+        source_el.id = key;
+        source_el.classList = "mat-icons material-icons-outlined";
+        hmtl_elements[key] = source_el;
+        obs_div.appendChild(source_el);
     }
 
     obs = new OBSWebSocket();
@@ -12,7 +17,7 @@ window.onload = function() {
             // Check Sources' State upon connection
             try {
                 for (const [key, value] of Object.entries(config.obs.sources)) {
-                    sendGetMute(key);
+                    getInputMuteState(key);
                 }
             } catch (error) {
                 console.log(error);
@@ -22,7 +27,7 @@ window.onload = function() {
             obs.on("InputMuteStateChanged", data => {
                 try {
                     for (const [key, value] of Object.entries(config.obs.sources)) {
-                        checkMuteState(data, key);
+                        updateInputMuteState(data, key);
                     }
                 } catch (error) {
                     console.log(error)
@@ -44,13 +49,13 @@ async function connectObsWs(address, port, password) {
     }
 }
 
-function sendGetMute(source) {
+function getInputMuteState(source) {
     try {
         obs.call("GetInputMute", {
             inputName: config.obs.sources[source].name
         }).then(data => {
             try {
-                setMuteStatus(data.inputMuted, source);
+                setInputMuteIcon(data.inputMuted, source);
             } catch (error) {
                 console.log(error)
             }
@@ -60,13 +65,13 @@ function sendGetMute(source) {
     }
 }
 
-function checkMuteState(data, source) {
+function updateInputMuteState(data, source) {
     if (data.inputName == config.obs.sources[source].name) {
-        setMuteStatus(data.inputMuted, source);
+        setInputMuteIcon(data.inputMuted, source);
     }
 }
 
-function setMuteStatus(muted, source) {
+function setInputMuteIcon(muted, source) {
     if (muted) {
         hmtl_elements[source].innerHTML = config.obs.sources[source].icons.off;
         hmtl_elements[source].style.visibility = "visible";

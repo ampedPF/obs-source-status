@@ -9,15 +9,19 @@ body {
     font-size: 48px;
 }
 
+html,
+body {
+	height: 100%;
+}
+
 body {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
 }
 
 #obs_div {
-    order: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
 }

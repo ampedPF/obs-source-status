@@ -3,7 +3,7 @@ const config = {
         ws_server_ip: 'WS_SERVER_IP',
         ws_server_port: 'WS_SERVER_PORT',
         ws_server_password: 'WS_SERVER_PASSWORD', // Leave empty if authentication is not enabled
-        sources: { // Source key must match the id in obs.html
+        sources: {
             game: {
                 name: 'AUDIO_SOURCE_GAME',
                 icons: { // https://fonts.google.com/icons
@@ -30,6 +30,13 @@ const config = {
                 icons: {
                     off: 'mic_off',
                     on: 'mic_none'
+                }
+            },
+            desktop: {
+                name: 'AUDIO_SOURCE_DESKTOP',
+                icons: {
+                    off: 'volume_off',
+                    on: 'volume_up'
                 }
             }
         }
