@@ -1,6 +1,6 @@
-# OBS Audio Status
+# OBS Source Status
 
-This widget displays the current status of the specified OBS audio sources.
+This widget displays the current status of the specified OBS sources.
 
 It can be used as an overlay and/or as a projector.
 

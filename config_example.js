@@ -5,6 +5,7 @@ const config = {
         ws_server_password: 'WS_SERVER_PASSWORD', // Leave empty if authentication is not enabled
         sources: {
             game: {
+                state_type: 'mute',
                 name: 'AUDIO_SOURCE_GAME',
                 icons: { // https://fonts.google.com/icons
                     off: 'videogame_asset_off',
@@ -12,6 +13,7 @@ const config = {
                 }
             },
             music: {
+                state_type: 'mute',
                 name: 'AUDIO_SOURCE_MUSIC',
                 icons: {
                     off: 'music_off',
@@ -19,6 +21,7 @@ const config = {
                 }
             },
             comms: {
+                state_type: 'mute',
                 name: 'AUDIO_SOURCE_COMMS',
                 icons: {
                     off: 'group_off',
@@ -26,6 +29,7 @@ const config = {
                 }
             },
             mic: {
+                state_type: 'mute',
                 name: 'AUDIO_SOURCE_MIC',
                 icons: {
                     off: 'mic_off',
@@ -33,12 +37,30 @@ const config = {
                 }
             },
             desktop: {
+                state_type: 'mute',
                 name: 'AUDIO_SOURCE_DESKTOP',
                 icons: {
                     off: 'volume_off',
                     on: 'volume_up'
                 }
-            }
+            },
+            facecam: {
+                state_type: 'show',
+                name: 'VIDEO_SOURCE_FACECAM',
+                icons: {
+                    off: 'videocam_off',
+                    on: 'videocam'
+                }
+            },
+            overhead: {
+                state_type: 'show',
+                name: 'VIDEO_SOURCE_OVERHEAD',
+                icons: {
+                    off: 'videocam_off',
+                    on: 'videocam'
+                },
+                custom_css: 'transform: rotate(90deg) scaleY(-1);'
+            },
         }
     },
     // Set to true to display the on icons.
