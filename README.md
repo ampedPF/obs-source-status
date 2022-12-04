@@ -6,11 +6,14 @@ It can be used as an overlay and/or as a projector.
 
 You can use any icons from <https://fonts.google.com/icons>
 
-![Windowed Projector over Audio Mixer](/assets/audio_mixer_and_projector.png)
+![Audio Mixer](/assets/audio_mixer.png)
+
+![Dock](/assets/dock.png)
 
 ## Requirements
 
-- OBS 28.0.2 or later
+- [OBS 28.0.2](https://github.com/obsproject/obs-studio/releases/tag/28.0.2) or later
+- [obs-websocket v5.0.1](https://github.com/obsproject/obs-websocket/releases/tag/5.0.1) or later (bundled with OBS 28+ by default)
 
 ## Configuration
 

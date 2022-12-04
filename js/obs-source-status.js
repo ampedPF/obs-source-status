@@ -43,8 +43,10 @@ window.onload = function() {
             obs.on("SceneItemEnableStateChanged", data => {
                 updateInputSourceState(data);
             });
+        })
+        .catch((error) => {
+            console.error(error);
         });
-
 }
 
 async function connectObsWs(address, port, password) {
