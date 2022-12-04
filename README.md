@@ -27,8 +27,8 @@ You can use any icons from <https://fonts.google.com/icons>
     custom_css: 'transform: rotate(90deg) scaleY(-1);'
     ```
 1. (Optional) To control the layout of the icons, in obs browser source properties add the following to the `Custom CSS` panel
-```css
-#obs_div {
-    flex-direction: column; // Default: row | Available row-reverse / column / column-reverse
-}
-```
+    ```css
+    #obs_div {
+        flex-direction: column; // Default: row | Available row-reverse / column / column-reverse
+    }
+    ```
