@@ -2,7 +2,7 @@
 
 This widget displays the current status of the specified OBS sources.
 
-It can be used as an overlay and/or as a projector.
+It can be used as an overlay and/or as a dock.
 
 You can use any icons from <https://fonts.google.com/icons>
 
