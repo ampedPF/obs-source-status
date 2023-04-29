@@ -29,14 +29,7 @@ window.onload = function() {
 
             // Check Source Mute State on change
             obs.on("InputMuteStateChanged", data => {
-                console.log("InputMuteStateChanged");
-                try {
-                    for (const [key, value] of Object.entries(config.obs.sources)) {
-                        updateInputMuteState(data, key, value.state_type);
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
+                updateInputMuteState(data);
             });
 
             // Check Source State on change
@@ -93,13 +86,19 @@ function getInputSettings(source) {
     }
 }
 
-function updateInputMuteState(data, source, type) {
-    if (data.inputName == config.obs.sources[source].name) {
-        if(type == "mute") {
-            setSourceStateIcon(!data.inputMuted, source);
-        } else if (type == "show") {
-            setSourceStateIcon(data.videoShowing, source);
+function updateInputMuteState(data) {
+    try {
+        for (const [source, type] of Object.entries(config.obs.sources)) {
+            if (data.inputName == config.obs.sources[source].name) {
+                if(type.state_type == "mute") {
+                    setSourceStateIcon(!data.inputMuted, source);
+                } else if (type.state_type == "show") {
+                    setSourceStateIcon(data.videoShowing, source);
+                }
+            }
         }
+    } catch (error) {
+        console.log(error);
     }
 }
 
